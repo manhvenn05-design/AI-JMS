@@ -1,0 +1,11 @@
+@model IEnumerable<AI_JMS.Models.tblMenus>
+
+@foreach (var item in Model)
+{
+    <li class="nav-item">
+        <a class="nav-link" asp-area="@item.AreaName" asp-controller="@item.ControllerName" asp-action="@item.ActionName">
+            <i class="fas fa-fw @item.Icon"></i>
+            <span>@item.MenuName</span>
+        </a>
+    </li>
+}
