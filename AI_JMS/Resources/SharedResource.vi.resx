@@ -160,4 +160,20 @@
   <data name="Cancel" xml:space="preserve">
     <value>Hủy</value>
   </data>
+
+  <data name="Locked" xml:space="preserve">
+    <value>Đã Khoá</value>
+  </data>
+
+  <data name="Active" xml:space="preserve">
+    <value>Hoạt động</value>
+  </data>
+
+  <data name="InvalidLogin" xml:space="preserve">
+    <value>Đăng nhập không hợp lệ.</value>
+  </data>
+
+  <data name="AccountLocked" xml:space="preserve">
+    <value>Tài khoản của bạn đã bị khóa. Vui lòng liên hệ quản trị viên.</value>
+  </data>
 </root>

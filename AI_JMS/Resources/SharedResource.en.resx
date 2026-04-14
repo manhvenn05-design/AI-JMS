@@ -159,4 +159,19 @@
     <value>Cancel</value>
   </data>
 
+  <data name="Locked" xml:space="preserve">
+    <value>Locked</value>
+  </data>
+
+  <data name="Active" xml:space="preserve">
+    <value>Active</value>
+  </data>
+  <data name="InvalidLogin" xml:space="preserve">
+    <value>Invalid login attempt.</value>
+  </data>
+  
+  <data name="AccountLocked" xml:space="preserve">
+    <value>Your account is locked. Please contact the administrator.</value>
+  </data>
+
 </root>

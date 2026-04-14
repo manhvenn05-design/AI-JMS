@@ -1,65 +1,106 @@
-@using Microsoft.Extensions.Localization
-@inject IStringLocalizer<SharedResource> Localizer
-@model AI_JMS.Models.tblUsers
+@model AI_JMS.Models.ViewModels.UserProfileViewModel
 @{
-    ViewData["Title"] = Localizer["Profile"];
-    // Sử dụng Layout Admin để có Sidebar và Topbar
+    ViewData["Title"] = "Hồ sơ cá nhân";
+    
     Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml"; 
 }
+
 <div class="container-fluid">
     <div class="d-sm-flex align-items-center justify-content-between mb-4">
-        <h1 class="h3 mb-0 text-gray-800">@Localizer["Profile"]</h1>
+        <h1 class="h3 mb-0 text-gray-800">Cấu hình hồ sơ</h1>
     </div>
 
     <div class="row">
-        <div class="col-xl-4 col-lg-5">
+        <div class="col-lg-4">
             <div class="card shadow mb-4">
                 <div class="card-body text-center">
-                    <div class="py-4">
-                        <img class="img-profile rounded-circle mb-3 shadow" 
-                             src="~/img/undraw_profile.svg" 
-                             style="width:150px; border: 3px solid #f8f9fc;">
-                        <h4 class="font-weight-bold text-primary">@Model.FullName</h4>
-                        <p class="text-muted"><i class="fas fa-envelope mr-2"></i>@Model.Email</p>
-                    </div>
+                    <img class="img-profile rounded-circle mb-3 shadow" 
+                         src="~/img/avatars/@(string.IsNullOrEmpty(Model.Avatar) ? "default-avatar.png" : Model.Avatar)" 
+                         style="width: 150px; height: 150px; object-fit: cover; border: 3px solid #f8f9fc;">
+                    <h5 class="font-weight-bold text-primary">@Model.FullName</h5>
+                    <p class="text-muted small">@Model.Email</p>
                 </div>
             </div>
         </div>
 
-        <div class="col-xl-8 col-lg-7">
+        <div class="col-lg-8">
             <div class="card shadow mb-4">
                 <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                    <h6 class="m-0 font-weight-bold text-primary">
-                        <i class="fas fa-user-edit mr-2"></i>@Localizer["PersonalInformation"]
-                    </h6>
+                    <ul class="nav nav-tabs card-header-tabs" id="profileTab" role="tablist">
+                        <li class="nav-item">
+                            <a class="nav-link active" id="account-tab" data-toggle="tab" href="#account" role="tab">
+                                <i class="fas fa-user-circle fa-sm"></i> Thông tin tài khoản
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" id="scientific-tab" data-toggle="tab" href="#scientific" role="tab">
+                                <i class="fas fa-microscope fa-sm"></i> Hồ sơ khoa học
+                            </a>
+                        </li>
+                    </ul>
                 </div>
-                <div class="card-body">
-                    @if (TempData["Success"] != null)
-                    {
-                        <div class="alert alert-success alert-dismissible fade show" role="alert">
-                            @TempData["Success"]
-                            <button type="button" class="close" data-dismiss="alert"><span>&times;</span></button>
-                        </div>
-                    }
 
-                    <form asp-action="UpdateProfile" asp-controller="Account" method="post">
-                        <div class="form-group">
-                            <label class="text-gray-700 font-weight-bold">@Localizer["FullName"]</label>
-                            <input type="text" name="FullName" value="@Model.FullName" 
-                                   class="form-control form-control-user" placeholder="Nhập họ tên...">
+                <div class="card-body">
+                    <form asp-action="UpdateProfile" method="post" enctype="multipart/form-data">
+                        <div class="tab-content" id="profileTabContent">
+                            
+                            <div class="tab-pane fade show active" id="account" role="tabpanel">
+                                <div class="form-group">
+                                    <label class="text-dark font-weight-bold">Họ và tên</label>
+                                    <input asp-for="FullName" class="form-control" placeholder="Nhập họ tên đầy đủ" />
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6 form-group">
+                                        <label class="text-dark font-weight-bold">Số điện thoại</label>
+                                        <input asp-for="Phone" class="form-control" placeholder="0123.456.789" />
+                                    </div>
+                                    <div class="col-md-6 form-group">
+                                        <label class="text-dark font-weight-bold">Giới tính</label>
+                                        <select asp-for="Gender" class="form-control">
+                                            <option value="Nam">Nam</option>
+                                            <option value="Nữ">Nữ</option>
+                                            <option value="Khác">Khác</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="text-dark font-weight-bold">Thay đổi ảnh đại diện</label>
+                                    <div class="custom-file">
+                                        <input type="file" name="avatarFile" class="custom-file-input" id="customFile">
+                                        <label class="custom-file-label" for="customFile">Chọn ảnh...</label>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="tab-pane fade" id="scientific" role="tabpanel">
+                                <div class="form-group">
+                                    <label class="text-dark font-weight-bold">Học hàm, học vị</label>
+                                    <select asp-for="AcademicTitle" class="form-control border-left-primary">
+                                        <option value="Không">Không</option>
+                                        <option value="Thạc sĩ">Thạc sĩ</option>
+                                        <option value="Tiến sĩ">Tiến sĩ</option>
+                                        <option value="PGS.TS">PGS.TS</option>
+                                        <option value="GS.TS">GS.TS</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label class="text-dark font-weight-bold">Đơn vị công tác</label>
+                                    <input asp-for="Affiliation" class="form-control border-left-primary" placeholder="Ví dụ: Đại học Vinh" />
+                                </div>
+                                <div class="form-group">
+                                    <label class="text-dark font-weight-bold">Lĩnh vực chuyên môn (Keywords)</label>
+                                    <textarea asp-for="ExpertiseKeywords" class="form-control border-left-primary" rows="3" 
+                                              placeholder="AI, Deep Learning, Java..."></textarea>
+                                    <small class="form-text text-info"><i class="fas fa-info-circle"></i> Cách nhau bằng dấu phẩy.</small>
+                                </div>
+                            </div>
+
                         </div>
                         
-                        <div class="form-group">
-                            <label class="text-gray-700 font-weight-bold">@Localizer["Email"]</label>
-                            <input type="text" value="@Model.Email" class="form-control bg-light" readonly>
-                            <small class="text-danger mt-1 d-block"><i class="fas fa-info-circle mr-1"></i>@Localizer["EmailCannotBeChanged"]</small>
-                        </div>
-
-                        <hr>
-                        <div class="text-right">
-                            <button type="submit" class="btn btn-success btn-icon-split shadow-sm">
-                                <span class="icon text-white-50"><i class="fas fa-check"></i></span>
-                                <span class="text">@Localizer["SaveChanges"]</span>
+                        <div class="mt-4 text-right">
+                            <button type="submit" class="btn btn-primary btn-icon-split shadow">
+                                <span class="icon text-white-50"><i class="fas fa-save"></i></span>
+                                <span class="text">Lưu tất cả thay đổi</span>
                             </button>
                         </div>
                     </form>

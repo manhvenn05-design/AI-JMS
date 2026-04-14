@@ -1,4 +1,7 @@
 @model IEnumerable<AI_JMS.Models.tblUsers>
+@using Microsoft.Extensions.Localization
+@using System.Globalization
+@inject IStringLocalizer<SharedResource> Localizer
 @{
     ViewData["Title"] = "Quản lý thành viên";
 }
@@ -19,24 +22,111 @@
                     @foreach (var user in Model)
                     {
                         <tr>
-                            <td>@user.FullName</td>
-                            <td>@user.Email</td>
                             <td>
-                                <form asp-action="AssignRole" method="post" class="form-inline">
-                                    <input type="hidden" name="userId" value="@user.UserId" />
-                                    <select name="roleId" class="form-control form-control-sm mr-2">
-                                        @foreach (var role in ViewBag.Roles)
-                                        {
-                                            <option value="@role.RoleId">@role.RoleName</option>
-                                        }
-                                    </select>
-                                    <button type="submit" class="btn btn-primary btn-sm">Cấp quyền</button>
-                                </form>
+                                <div class="font-weight-bold">@user.FullName</div>
+                                <div class="mt-1">
+                                    @foreach (var ur in user.UserRoles)
+                                    {
+                                        <span class="badge badge-info shadow-sm mr-1">
+                                            <i class="fas fa-user-tag fa-xs"></i> @ur.Role.RoleName
+                                        </span>
+                                    }
+                                </div>
                             </td>
-                        </tr>
-                    }
-                </tbody>
-            </table>
+                            <td>@user.Email</td>
+                            <td class="text-center">
+                                @if (user.IsActive)
+                                {
+                                    <span class="badge badge-success"><i class="fas fa-check-circle"></i>
+                                        @Localizer["Active"]</span>
+                                    }
+                else
+                                    {
+                                        <span class="badge badge-danger"><i class="fas fa-lock"></i> @Localizer["Locked"]</span>
+                                    }
+                                </td>
+                                <td>
+                                    <div class="d-flex align-items-center">
+                                        <form asp-action="AssignRole" method="post" class="form-inline role-form">
+                                            <input type="hidden" name="userId" value="@user.UserId" />
+                                            <select name="roleId" class="form-control form-control-sm mr-1 border-primary">
+                                                @foreach (var role in ViewBag.Roles)
+                                                {
+                                                    <option value="@role.RoleId">@role.RoleName</option>
+                                                }
+                                            </select>
+                                            <button type="button" class="btn btn-primary btn-sm btn-assign"
+                                                    data-name="@user.FullName">
+                                                <i class="fas fa-plus"></i>
+                                            </button>
+                                        </form>
+
+                                        <form asp-action="ToggleStatus" method="post" class="ml-2 status-form">
+                                            <input type="hidden" name="userId" value="@user.UserId" />
+                                            <button type="button"
+                                                    class="btn btn-sm @(user.IsActive ? "btn-outline-danger" : "btn-outline-success") btn-toggle"
+                                                    data-name="@user.FullName" data-action="@(user.IsActive ? "Khóa" : "Mở khóa")">
+                                                <i class="fas @(user.IsActive ? "fa-user-slash" : "fa-user-check")"></i>
+                                            </button>
+                                        </form>
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+                <nav aria-label="Page navigation">
+                    <ul class="pagination justify-content-center">
+                        @for (int i = 1; i <= ViewBag.TotalPages; i++)
+                        {
+                            <li class="page-item @(i == ViewBag.CurrentPage ? "active" : "")">
+                                <a class="page-link" href="@Url.Action("Index", new { page = i })">@i</a>
+                            </li>
+                        }
+                    </ul>
+                </nav>
+            </div>
         </div>
     </div>
-</div>
+    @section Scripts {
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+        <script>
+            $(document).ready(function () {
+            // Xác nhận Cấp quyền
+            $('.btn-assign').click(function () {
+            var form = $(this).closest('form');
+            var name = $(this).data('name');
+            var role = form.find('select option:selected').text();
+
+            Swal.fire({
+            title: 'Xác nhận cấp quyền?',
+            text: `Bạn muốn cấp quyền "${role}" cho ${name}?`,
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonColor: '#4e73df',
+            confirmButtonText: 'Đồng ý'
+            }).then((result) => {
+            if (result.isConfirmed) form.submit();
+            });
+            });
+
+            // Xác nhận Khóa/Mở khóa
+            $('.btn-toggle').click(function () {
+            var form = $(this).closest('form');
+            var name = $(this).data('name');
+            var action = $(this).data('action');
+
+            Swal.fire({
+            title: action + ' tài khoản?',
+            text: `Bạn có chắc chắn muốn ${action.toLowerCase()} ${name}?`,
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: action === 'Khóa' ? '#e74a3b' : '#1cc88a',
+            confirmButtonText: 'Thực hiện'
+            }).then((result) => {
+            if (result.isConfirmed) form.submit();
+            });
+            });
+            });
+        </script>
+    }

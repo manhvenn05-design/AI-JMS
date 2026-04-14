@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 using AI_JMS.Data; // Đảm bảo đúng namespace chứa DbContext của bạn
 using AI_JMS.Models;
 using System.Security.Claims;
+using Microsoft.AspNetCore.Mvc.Filters;
 
 namespace AI_JMS.Areas.Admin.Controllers;
 
@@ -24,7 +25,7 @@ public class HomeController : Controller
     [HttpPost]
     public async Task<IActionResult> SwitchRole(int roleId)
     {
-       // 1. Lấy ID của người dùng đang đăng nhập từ Cookie
+        // 1. Lấy ID của người dùng đang đăng nhập từ Cookie
         var userIdStr = User.FindFirstValue(ClaimTypes.NameIdentifier);
         if (string.IsNullOrEmpty(userIdStr)) return RedirectToAction("Login", "Account", new { area = "" });
 
@@ -41,5 +42,22 @@ public class HomeController : Controller
         // Sau khi lưu xong, quay lại trang Index. 
         // Lúc này Sidebar và Topbar sẽ tự động đọc giá trị mới từ DB và thay đổi theo.
         return RedirectToAction("Index");
+    }
+
+    public override void OnActionExecuting(ActionExecutingContext context)
+    {
+        if (User.Identity.IsAuthenticated)
+        {
+            var userId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)??"0");
+            // Kiểm tra trực tiếp trong DB xem có còn Active không
+            var isActive = _context.Users.Where(u => u.UserId == userId).Select(u => u.IsActive).FirstOrDefault();
+
+            if (!isActive)
+            {
+                context.Result = new RedirectToActionResult("Login", "Account", new { area = "" });
+                // Có thể thêm lệnh SignOut ở đây để xóa luôn Cookie
+            }
+        }
+        base.OnActionExecuting(context);
     }
 }
