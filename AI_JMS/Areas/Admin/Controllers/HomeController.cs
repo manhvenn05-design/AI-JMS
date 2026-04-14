@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using AI_JMS.Data; // Đảm bảo đúng namespace chứa DbContext của bạn
 using AI_JMS.Models;
+using System.Security.Claims;
 
 namespace AI_JMS.Areas.Admin.Controllers;
 
@@ -23,15 +24,17 @@ public class HomeController : Controller
     [HttpPost]
     public async Task<IActionResult> SwitchRole(int roleId)
     {
-        // Giả lập UserId = 1 đang đăng nhập
-        int currentUserId = 1; 
-        
-        var user = await _context.Users.FindAsync(currentUserId);
-        
+       // 1. Lấy ID của người dùng đang đăng nhập từ Cookie
+        var userIdStr = User.FindFirstValue(ClaimTypes.NameIdentifier);
+        if (string.IsNullOrEmpty(userIdStr)) return RedirectToAction("Login", "Account", new { area = "" });
+
+        int userId = int.Parse(userIdStr);
+
+        // 2. Cập nhật lại vai trò đang chọn vào Database
+        var user = await _context.Users.FindAsync(userId);
         if (user != null)
         {
-            // Cập nhật vai trò người dùng vừa chọn vào cột LastSelectedRoleId
-            user.LastSelectedRoleId = roleId; 
+            user.LastSelectedRoleId = roleId;
             await _context.SaveChangesAsync();
         }
 

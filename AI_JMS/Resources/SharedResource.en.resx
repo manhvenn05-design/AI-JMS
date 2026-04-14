@@ -135,6 +135,28 @@
     <value>Admin</value>
   </data>
 
+  <data name="Reviewer" xml:space="preserve">
+    <value>Reviewer</value>
+  </data> 
 
+  <data name="Language" xml:space="preserve">
+    <value>Language</value>
+  </data>
+
+  <data name="LogoutNow" xml:space="preserve">
+    <value>Logout Now</value>
+  </data>
+
+  <data name="LogoutConfirmationMessage" xml:space="preserve">
+    <value>Are you sure you want to logout?</value>
+  </data>
+
+  <data name="ReadyToLeave" xml:space="preserve">
+    <value>Ready to leave?</value>
+  </data>
+
+  <data name="Cancel" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
 
 </root>

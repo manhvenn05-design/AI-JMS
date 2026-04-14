@@ -136,4 +136,28 @@
   <data name="Admin" xml:space="preserve">
     <value>Quản trị viên</value>
   </data>
+
+    <data name="Reviewer" xml:space="preserve">
+    <value>Phản biện</value>
+  </data> 
+
+  <data name="Language" xml:space="preserve">
+    <value>Ngôn ngữ</value>
+  </data>
+
+  <data name="LogoutNow" xml:space="preserve">
+    <value>Đăng xuất ngay</value>
+  </data>
+
+  <data name="LogoutConfirmationMessage" xml:space="preserve">
+    <value>Bạn có chắc chắn muốn đăng xuất?</value>
+  </data>
+
+  <data name="ReadyToLeave" xml:space="preserve">
+    <value>Bạn đã sẵn sàng để rời khỏi?</value>
+  </data>
+
+  <data name="Cancel" xml:space="preserve">
+    <value>Hủy</value>
+  </data>
 </root>

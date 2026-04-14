@@ -1,0 +1,42 @@
+@model IEnumerable<AI_JMS.Models.tblUsers>
+@{
+    ViewData["Title"] = "Quản lý thành viên";
+}
+
+<div class="container-fluid">
+    <h1 class="h3 mb-2 text-gray-800">Danh sách thành viên</h1>
+    <div class="card shadow mb-4">
+        <div class="card-body">
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>Họ tên</th>
+                        <th>Email</th>
+                        <th>Hành động</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var user in Model)
+                    {
+                        <tr>
+                            <td>@user.FullName</td>
+                            <td>@user.Email</td>
+                            <td>
+                                <form asp-action="AssignRole" method="post" class="form-inline">
+                                    <input type="hidden" name="userId" value="@user.UserId" />
+                                    <select name="roleId" class="form-control form-control-sm mr-2">
+                                        @foreach (var role in ViewBag.Roles)
+                                        {
+                                            <option value="@role.RoleId">@role.RoleName</option>
+                                        }
+                                    </select>
+                                    <button type="submit" class="btn btn-primary btn-sm">Cấp quyền</button>
+                                </form>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

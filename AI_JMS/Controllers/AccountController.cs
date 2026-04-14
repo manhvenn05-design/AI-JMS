@@ -39,7 +39,7 @@ public class AccountController : Controller
                 {
                     new Claim(ClaimTypes.NameIdentifier, user.UserId.ToString()),
                     new Claim(ClaimTypes.Name, user.FullName),
-                    new Claim("LastRoleId", user.LastSelectedRoleId.ToString()  ?? "1") 
+                    new Claim("LastRoleId", user.LastSelectedRoleId.ToString()  ?? "1")
                 };
 
                 var identity = new ClaimsIdentity(claims, "CookieAuth");
@@ -80,7 +80,7 @@ public class AccountController : Controller
             // Lưu ý: PasswordHash ở đây đang chứa mật khẩu chưa băm từ form gửi lên
             if (model.PasswordHash != confirmPassword)
             {
-                ViewBag.Error = _localizer["PasswordMismatch"]; 
+                ViewBag.Error = _localizer["PasswordMismatch"];
                 return View(model);
             }
 
@@ -94,22 +94,74 @@ public class AccountController : Controller
 
             // 3. Băm mật khẩu
             model.PasswordHash = BCrypt.Net.BCrypt.HashPassword(model.PasswordHash);
-            model.LastSelectedRoleId = 1; 
-            
+            model.LastSelectedRoleId = 1;
+
             _context.Users.Add(model);
             await _context.SaveChangesAsync();
+
+
 
             // 4. Gán vai trò (Dùng đúng tên bảng tblUserRoles)
             var userRole = new tblUserRoles
             {
                 UserId = model.UserId,
-                RoleId = 1 
+                RoleId = 1
             };
             _context.UserRoles.Add(userRole);
             await _context.SaveChangesAsync();
+
+
+
+            TempData["RegisterSuccess"] = "Chào mừng " + model.FullName + "! Tài khoản của bạn đã được tạo.";
+
+
 
             return RedirectToAction("Login");
         }
         return View(model);
     }
+    //logout
+    [HttpPost] // Dùng Post để bảo mật hơn
+    public async Task<IActionResult> Logout()
+    {
+        // Xóa sạch Cookie xác thực
+        await HttpContext.SignOutAsync("CookieAuth");
+
+        // Quay về trang chủ hoặc trang Login
+        return RedirectToAction("Login");
+    }
+
+    //profile
+    [HttpGet]
+    public async Task<IActionResult> Profile()
+    {
+        // Lấy ID từ Cookie người dùng đang đăng nhập
+        var userIdStr = User.FindFirstValue(ClaimTypes.NameIdentifier);
+        if (string.IsNullOrEmpty(userIdStr)) return RedirectToAction("Login");
+
+        int userId = int.Parse(userIdStr);
+        var user = await _context.Users.FindAsync(userId);
+
+        if (user == null) return NotFound();
+
+        return View(user); // Trả về View Profile.cshtml mà bạn đã tạo
+    }
+    
+    [HttpPost]
+    public async Task<IActionResult> UpdateProfile(tblUsers updatedUser)
+    {
+        var userId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
+        var user = await _context.Users.FindAsync(userId);
+
+        if (user != null)
+        {
+            user.FullName = updatedUser.FullName;
+            // Bạn có thể cập nhật thêm Phone, Bio... tùy ý
+            await _context.SaveChangesAsync();
+            TempData["Success"] = "Cập nhật hồ sơ thành công!";
+        }
+        return RedirectToAction("Profile");
+    }
+
+    
 }
