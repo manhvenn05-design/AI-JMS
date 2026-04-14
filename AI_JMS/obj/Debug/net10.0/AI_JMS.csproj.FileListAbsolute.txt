@@ -163,7 +163,6 @@ D:\AI_JMS\AI_JMS\obj\Debug\net10.0\AI_JMS.genruntimeconfig.cache
 D:\AI_JMS\AI_JMS\obj\Debug\net10.0\ref\AI_JMS.dll
 D:\AI_JMS\AI_JMS\obj\Debug\net10.0\compressed\sn7308hds0-{0}-r3unjvhb45-r3unjvhb45.gz
 D:\AI_JMS\AI_JMS\obj\Debug\net10.0\compressed\f5yy62lg73-{0}-02037ac2e4-02037ac2e4.gz
-D:\AI_JMS\AI_JMS\obj\Debug\net10.0\compressed\jom0az6emi-{0}-rj64zoa75m-rj64zoa75m.gz
 D:\AI_JMS\AI_JMS\obj\Debug\net10.0\compressed\98s5agf50h-{0}-cge9ud2ou6-cge9ud2ou6.gz
 D:\AI_JMS\AI_JMS\obj\Debug\net10.0\compressed\joigx1zhwp-{0}-3voehigyoz-3voehigyoz.gz
 D:\AI_JMS\AI_JMS\obj\Debug\net10.0\compressed\7dq82x1mwc-{0}-vuyk5hsu8t-vuyk5hsu8t.gz
@@ -1853,3 +1852,13 @@ D:\AI_JMS\AI_JMS\obj\Debug\net10.0\compressed\k53d22jtqz-{0}-njp7vu7jcj-njp7vu7j
 D:\AI_JMS\AI_JMS\obj\Debug\net10.0\compressed\5whq31i08u-{0}-eeix3wlwuj-eeix3wlwuj.gz
 D:\AI_JMS\AI_JMS\obj\Debug\net10.0\compressed\lsycxje525-{0}-8c6joi3n26-8c6joi3n26.gz
 D:\AI_JMS\AI_JMS\obj\Debug\net10.0\AI_JMS.csproj.GenerateResource.cache
+D:\AI_JMS\AI_JMS\bin\Debug\net10.0\en\AI_JMS.resources.dll
+D:\AI_JMS\AI_JMS\bin\Debug\net10.0\vi\AI_JMS.resources.dll
+D:\AI_JMS\AI_JMS\bin\Debug\net10.0\BCrypt.Net-Next.dll
+D:\AI_JMS\AI_JMS\obj\Debug\net10.0\AI_JMS.sourcelink.json
+D:\AI_JMS\AI_JMS\obj\Debug\net10.0\en\AI_JMS.resources.cs
+D:\AI_JMS\AI_JMS\obj\Debug\net10.0\en\AI_JMS.resources.dll
+D:\AI_JMS\AI_JMS\obj\Debug\net10.0\vi\AI_JMS.resources.cs
+D:\AI_JMS\AI_JMS\obj\Debug\net10.0\vi\AI_JMS.resources.dll
+D:\AI_JMS\AI_JMS\obj\Debug\net10.0\AI_JMS.Resources.SharedResource.en.resources
+D:\AI_JMS\AI_JMS\obj\Debug\net10.0\AI_JMS.Resources.SharedResource.vi.resources

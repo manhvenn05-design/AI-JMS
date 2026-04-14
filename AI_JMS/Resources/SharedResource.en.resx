@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" msdata:Ordinal="1" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype"><value>text/microsoft-resx</value></resheader>
+  <resheader name="version"><value>2.0</value></resheader>
+  <resheader name="reader"><value>System.Resources.ResXResourceReader</value></resheader>
+  <resheader name="writer"><value>System.Resources.ResXResourceWriter</value></resheader>
+
+  <data name="LoginTitle" xml:space="preserve">
+    <value>Login</value>
+  </data>
+  <data name="WelcomeBack" xml:space="preserve">
+    <value>Welcome Back!</value>
+  </data>
+  <data name="EnterEmail" xml:space="preserve">
+    <value>Type your Email address ..</value>
+  </data>
+  <data name="Password" xml:space="preserve">
+    <value>Password</value>
+  </data>
+  <data name="LoginButton" xml:space="preserve">
+    <value>Login</value>
+  </data>
+
+  <data name="NoAccountText" xml:space="preserve">
+    <value>Don't have an account?</value>
+  </data>
+
+  <data name="RegisterNow" xml:space="preserve">
+    <value>Register now!</value>
+  </data>
+
+  <data name="ForgotPassword" xml:space="preserve">
+    <value>Forgot Password?</value>
+  </data>
+
+  <data name="PasswordMismatch" xml:space="preserve">
+    <value>Passwords do not match.</value>
+  </data>
+
+  <data name="EmailExists" xml:space="preserve">
+    <value>An account with this email already exists.</value>
+  </data>
+
+  <data name="RegisterTitle" xml:space="preserve">
+    <value>Register</value>
+  </data>
+
+  <data name="CreateAccount" xml:space="preserve">
+    <value>Create Account</value>
+  </data>
+
+  <data name="FullName" xml:space="preserve">
+    <value>Full Name</value>
+  </data>
+
+  <data name="Email" xml:space="preserve">
+    <value>Email</value>
+  </data>
+
+  <data name="Password" xml:space="preserve">
+    <value> Password</value>
+  </data>
+
+  <data name="RepeatPassword" xml:space="preserve">
+    <value>Repeat Password</value>
+  </data>
+
+  <data name="RegisterButton" xml:space="preserve">
+    <value>Register</value>
+  </data>
+
+
+  <data name="AlreadyHaveAccount" xml:space="preserve">
+    <value>Already have an account?</value>
+  </data>
+
+
+  <data name="LoginNow" xml:space="preserve">
+    <value>Login now!</value>
+  </data>
+
+
+  <data name="PasswordMismatch" xml:space="preserve">
+    <value>Passwords do not match.</value>
+  </data>
+
+
+  <data name="EmailExists" xml:space="preserve">
+    <value>An account with this email already exists.</value>
+  </data>
+
+  <data name="Profile" xml:space="preserve">
+    <value>Profile</value>
+  </data>
+
+  <data name="SwitchRole" xml:space="preserve">
+    <value>Switch Role</value>
+  </data>
+
+  <data name="Logout" xml:space="preserve">
+    <value>Logout</value>
+  </data>
+
+  <data name="Author" xml:space="preserve">
+    <value>Author</value>
+  </data>
+  
+  <data name="Admin" xml:space="preserve">
+    <value>Admin</value>
+  </data>
+
+
+
+</root>

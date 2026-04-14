@@ -1,47 +1,53 @@
 @model AI_JMS.Models.tblUsers
+@using Microsoft.Extensions.Localization
+@inject IStringLocalizer<SharedResource> Localizer
 
 <li class="nav-item dropdown no-arrow">
-    <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
-    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-    
-    <div class="d-flex flex-column text-right mr-2">
-        <span class="d-none d-lg-inline text-gray-600 small font-weight-bold">
-            @Model.FullName
-        </span>
-        <span class="d-none d-lg-inline text-info small" style="font-size: 0.75rem;">
-            <i class="fas fa-user-tag fa-sm"></i> @ViewBag.CurrentRoleName
-        </span>
+    <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown"
+       aria-haspopup="true" aria-expanded="false">
+
+        <div class="d-flex flex-column text-right mr-3">
+            <span class="d-none d-lg-inline text-gray-600 small font-weight-bold">
+                @(Model != null ? Model.FullName : "Guest")
+            </span>
+            <span class="d-none d-lg-inline text-info small" style="font-size: 0.7rem; margin-top: -2px;">
+                <i class="fas fa-user-tag fa-sm"></i> 
+                @Localizer[ViewBag.CurrentRoleName ?? "None"]
+            </span>
+        </div>
+
+        <img class="img-profile rounded-circle" src="~/img/undraw_profile.svg">
+    </a>
+
+    <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
+        <a class="dropdown-item" href="#">
+            <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
+            @Localizer["Profile"]
+        </a>
+
+        <div class="dropdown-divider"></div>
+
+        <h6 class="dropdown-header">@Localizer["SwitchRole"]:</h6>
+
+        @if (Model?.UserRoles != null)
+        {
+            @foreach (var ur in Model.UserRoles)
+            {
+                <form asp-area="Admin" asp-controller="Home" asp-action="SwitchRole" asp-route-roleId="@ur.RoleId" method="post">
+                    <button type="submit"
+                            class="dropdown-item @(ur.RoleId == Model.LastSelectedRoleId ? "active font-weight-bold" : "")">
+                        <i class="fas fa-exchange-alt fa-sm fa-fw mr-2 @(ur.RoleId == Model.LastSelectedRoleId ? "text-white" : "text-gray-400")"></i>
+                        @Localizer[ur.Role?.RoleName ?? "Role"]
+                    </button>
+                </form>
+            }
+        }
+
+        <div class="dropdown-divider"></div>
+
+        <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
+            <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
+            @Localizer["Logout"]
+        </a>
     </div>
-
-    <img class="img-profile rounded-circle" src="~/Admin/img/undraw_profile.svg">
-</a>
-
-
-<div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
-    <a class="dropdown-item" href="#">
-        <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
-        Hồ sơ cá nhân
-    </a>
-    
-    <div class="dropdown-divider"></div>
-    
-    <h6 class="dropdown-header">Chuyển vai trò nhanh:</h6>
-    
-    @foreach (var ur in Model.UserRoles)
-    {
-        <form asp-area="Admin" asp-controller="Home" asp-action="SwitchRole" asp-route-roleId="@ur.RoleId" method="post">
-            <button type="submit" class="dropdown-item @(ur.RoleId == Model.LastSelectedRoleId ? "active font-weight-bold" : "")">
-                <i class="fas fa-exchange-alt fa-sm fa-fw mr-2 @(ur.RoleId == Model.LastSelectedRoleId ? "text-primary" : "text-gray-400")"></i>
-                @ur.Role.RoleName
-            </button>
-        </form>
-    }
-    
-    <div class="dropdown-divider"></div>
-    
-    <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
-        <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
-        Đăng xuất
-    </a>
-</div>
 </li>
