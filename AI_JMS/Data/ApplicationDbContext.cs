@@ -25,28 +25,29 @@ public class ApplicationDbContext : DbContext
     {
         base.OnModelCreating(modelBuilder);
 
-        // A. Ánh xạ tên bảng (Mapping Table Names)
-        // Lưu ý: Tên trong ToTable phải khớp 100% với tên bảng trong SQL Server Management Studio
+        // 1. Ánh xạ tên bảng (Giữ nguyên của Mạnh)
         modelBuilder.Entity<tblUsers>().ToTable("Users");
         modelBuilder.Entity<tblRoles>().ToTable("Roles");
         modelBuilder.Entity<tblUserRoles>().ToTable("UserRoles");
         modelBuilder.Entity<tblReviewerProfiles>().ToTable("ReviewerProfiles");
-        modelBuilder.Entity<tblUsersExpertise>().ToTable("UserExpertise"); // Khớp với sơ đồ image_547487
+        modelBuilder.Entity<tblUsersExpertise>().ToTable("UserExpertise");
 
-        // B. Cấu hình khóa chính phức hợp (Composite Key)
+        // 2. Khóa chính phức hợp cho UserRoles
         modelBuilder.Entity<tblUserRoles>()
             .HasKey(ur => new { ur.UserId, ur.RoleId });
 
-        // C. Cấu hình quan hệ 1-1 (Users <-> ReviewerProfiles)
+        // 3. FIX LỖI UserId1: Cấu hình quan hệ 1-1 (Users <-> ReviewerProfiles)
         modelBuilder.Entity<tblUsers>()
-            .HasOne(u => u.ReviewerProfile)
-            .WithOne()
-            .HasForeignKey<tblReviewerProfiles>(p => p.UserId);
+            .HasOne(u => u.ReviewerProfile)      // Một User có một Profile
+            .WithOne(p => p.User)               // Một Profile thuộc về một User (Chỉ rõ p.User ở đây)
+            .HasForeignKey<tblReviewerProfiles>(p => p.UserId) // Dùng chung cột UserId làm khóa ngoại
+            .OnDelete(DeleteBehavior.Cascade);
 
-        // D. Cấu hình quan hệ 1-N (Users <-> UserExpertise)
+        // 4. Cấu hình quan hệ 1-N (Users <-> UserExpertise)
         modelBuilder.Entity<tblUsersExpertise>()
-            .HasOne<tblUsers>()
-            .WithMany(u => u.UserExpertises)
-            .HasForeignKey(p => p.UserId);
+            .HasOne(p => p.User)                // Một Expertise thuộc về một User
+            .WithMany(u => u.UserExpertises)    // Một User có nhiều Expertise
+            .HasForeignKey(p => p.UserId)
+            .OnDelete(DeleteBehavior.Cascade);
     }
 }

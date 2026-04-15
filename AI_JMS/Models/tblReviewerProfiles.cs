@@ -1,17 +1,19 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-namespace AI_JMS.Models;
+using AI_JMS.Models;
 
 public class tblReviewerProfiles
 {
-    [Key] // khai báo khoá chính
+    [Key]
     public int ProfileId { get; set; }
-    [ForeignKey("Users")]
-    public int UserId { get; set; }
 
-    public string AcademicTitle { get; set; } = null!;
+    public int UserId { get; set; } // Khóa ngoại
 
-    public string Affiliation { get; set; } = null!;
+    // Phải có thuộc tính điều hướng ngược lại và chỉ rõ ForeignKey
+    [ForeignKey("UserId")]
+    public virtual tblUsers? User { get; set; } 
 
-    public int ReviewCount { get; set; } 
+    public string? AcademicTitle { get; set; }
+    public string? Affiliation { get; set; }
+    public int ReviewCount { get; set; }
 }

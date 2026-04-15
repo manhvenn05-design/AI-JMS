@@ -21,6 +21,8 @@ public class AccountController : Controller
         _localizer = localizer;
     }
 
+    #region 1. XỬ LÝ XÁC THỰC (LOGIN - REGISTER - LOGOUT)
+
     [HttpGet]
     public IActionResult Login() => View();
 
@@ -28,131 +30,240 @@ public class AccountController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Login(string email, string password)
     {
-        var user = await _context.Users.FirstOrDefaultAsync(u => u.Email == email);
+        // Chuẩn hóa email đầu vào
+        var normalizedEmail = email?.Trim().ToLower();
+        var user = await _context.Users.FirstOrDefaultAsync(u => u.Email == normalizedEmail);
 
-        if (user != null)
+        if (string.IsNullOrWhiteSpace(password))
         {
-            // 1. Kiểm tra mật khẩu trước
-            if (BCrypt.Net.BCrypt.Verify(password, user.PasswordHash))
+            ViewBag.Error = _localizer["PasswordRequired"];
+            return View();
+        }
+
+        if (user != null && BCrypt.Net.BCrypt.Verify(password, user.PasswordHash))
+        {
+            if (!user.IsActive)
             {
-                // 2. PHẢI kiểm tra IsActive ngay tại đây
-                // Sửa từ chuỗi tiếng Việt trực tiếp sang dùng key
-                if (!user.IsActive)
-                {
-                    ViewBag.Error = _localizer["AccountLocked"]; 
-                    return View();
-                }
-
-                var claims = new List<Claim>
-                {
-                    new Claim(ClaimTypes.NameIdentifier, user.UserId.ToString()),
-                    new Claim(ClaimTypes.Name, user.FullName),
-                    new Claim("LastRoleId", user.LastSelectedRoleId.ToString() ?? "1")
-                };
-
-                var identity = new ClaimsIdentity(claims, "CookieAuth");
-                var principal = new ClaimsPrincipal(identity);
-
-                await HttpContext.SignInAsync("CookieAuth", principal);
-                return RedirectToAction("Index", "Home", new { area = "Admin" });
+                ViewBag.Error = _localizer["AccountLocked"];
+                return View();
             }
+
+            var claims = new List<Claim>
+            {
+                new Claim(ClaimTypes.NameIdentifier, user.UserId.ToString()),
+                new Claim(ClaimTypes.Name, user.FullName),
+                new Claim("LastRoleId", user.LastSelectedRoleId?.ToString() ?? "1")
+            };
+
+            var identity = new ClaimsIdentity(claims, "CookieAuth");
+            var principal = new ClaimsPrincipal(identity);
+
+            await HttpContext.SignInAsync("CookieAuth", principal);
+            return RedirectToAction("Index", "Home", new { area = "Admin" });
         }
 
         ViewBag.Error = _localizer["InvalidLogin"];
         return View();
     }
 
-    // --- PHẦN PROFILE NÂNG CẤP (Xử lý 3 bảng) ---
+    [HttpGet]
+    public IActionResult Register() => View();
+
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> Register(string FullName, string Email, string PasswordHash, string confirmPassword)
+    {
+        if (string.IsNullOrWhiteSpace(FullName) || string.IsNullOrWhiteSpace(Email) || string.IsNullOrWhiteSpace(PasswordHash))
+        {
+            ViewBag.Error = _localizer["FillAllFields"];
+            return View();
+        }
+
+        if (PasswordHash.Length < 6)
+        {
+            ViewBag.Error = _localizer["PasswordTooShort"];
+            return View();
+        }
+
+        if (PasswordHash != confirmPassword)
+        {
+            ViewBag.Error = _localizer["PasswordsDoNotMatch"];
+            return View();
+        }
+
+        if (await _context.Users.AnyAsync(u => u.Email == Email.Trim().ToLower()))
+        {
+            ViewBag.Error = _localizer["EmailAlreadyExists"];
+            return View();
+        }
+
+        var user = new tblUsers
+        {
+            FullName = FullName.Trim(),
+            Email = Email.Trim().ToLower(),
+            PasswordHash = BCrypt.Net.BCrypt.HashPassword(PasswordHash),
+            IsActive = true,
+            CreatedAt = DateTime.Now,
+            LastSelectedRoleId = 1
+        };
+
+        _context.Users.Add(user);
+        await _context.SaveChangesAsync();
+
+        _context.UserRoles.Add(new tblUserRoles { UserId = user.UserId, RoleId = 1 });
+        await _context.SaveChangesAsync();
+
+        // THÊM DÒNG NÀY: Để hiện Alert khi nhảy về trang Login
+        TempData["RegisterSuccess"] = _localizer["RegisterSuccessMessage"].Value;
+        return RedirectToAction("Login");
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> Logout()
+    {
+        await HttpContext.SignOutAsync("CookieAuth");
+        return RedirectToAction("Login");
+    }
+
+    #endregion
+
+    #region 2. QUẢN LÝ HỒ SƠ (PROFILE)
 
     [HttpGet]
     public async Task<IActionResult> Profile()
     {
-        var userIdStr = User.FindFirstValue(ClaimTypes.NameIdentifier);
-        if (string.IsNullOrEmpty(userIdStr)) return RedirectToAction("Login");
-
-        int userId = int.Parse(userIdStr);
-
-        // Nạp kèm dữ liệu từ ReviewerProfiles và UserExpertises
-        var user = await _context.Users
-            .Include(u => u.ReviewerProfile)
-            .Include(u => u.UserExpertises)
-            .FirstOrDefaultAsync(u => u.UserId == userId);
-
-        if (user == null) return NotFound();
-
-        // Đổ dữ liệu vào ViewModel để hiển thị ra View
-        var vm = new UserProfileViewModel
-        {
-            FullName = user.FullName,
-            Email = user.Email,
-            Phone = user.Phone,
-            Gender = user.Gender,
-            Avatar = user.Avatar,
-            AcademicTitle = user.ReviewerProfile?.AcademicTitle,
-            Affiliation = user.ReviewerProfile?.Affiliation,
-            ExpertiseKeywords = string.Join(", ", user.UserExpertises.Select(e => e.Keyword))
-        };
-
+        var vm = await GetProfileData();
+        if (vm == null) return RedirectToAction("Login");
         return View(vm);
     }
 
     [HttpPost]
+    [ValidateAntiForgeryToken]
     public async Task<IActionResult> UpdateProfile(UserProfileViewModel vm, IFormFile? avatarFile)
     {
-        var userId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier) ?? "0");
-
+        var userId = GetCurrentUserId();
         var user = await _context.Users
             .Include(u => u.ReviewerProfile)
             .Include(u => u.UserExpertises)
             .FirstOrDefaultAsync(u => u.UserId == userId);
 
-        if (user == null) return NotFound();
+        if (user == null) return RedirectToAction("Login");
 
-        // 1. Cập nhật bảng tblUsers
-        user.FullName = vm.FullName ?? user.FullName;
-        user.Email = vm.Email ?? user.Email;
-        user.Phone = vm.Phone;
-        user.Gender = vm.Gender;
+        // --- LOGIC: CHỈ CẬP NHẬT NẾU FORM CÓ GỬI DỮ LIỆU (Tránh ghi đè Null) ---
 
-        // Xử lý Upload Avatar (nếu có chọn file mới)
-        if (avatarFile != null && avatarFile.Length > 0)
+        // 1. Kiểm tra nếu Form gửi lên có FullName -> Người dùng đang lưu ở Tab 1
+        if (!string.IsNullOrEmpty(vm.FullName))
         {
-            var fileName = Guid.NewGuid().ToString() + Path.GetExtension(avatarFile.FileName);
-            var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/img/avatars", fileName);
+            user.FullName = vm.FullName;
+            user.Phone = vm.Phone;
+            user.Gender = vm.Gender;
 
-            using (var stream = new FileStream(filePath, FileMode.Create))
+            // Xử lý Avatar (Giữ nguyên logic cũ của Mạnh)
+            if (avatarFile != null && avatarFile.Length > 0)
             {
-                await avatarFile.CopyToAsync(stream);
+                var fileName = Guid.NewGuid().ToString() + Path.GetExtension(avatarFile.FileName);
+                var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/img/avatars", fileName);
+                using (var stream = new FileStream(filePath, FileMode.Create)) { await avatarFile.CopyToAsync(stream); }
+                user.Avatar = fileName;
             }
-            user.Avatar = fileName;
         }
 
-        // 2. Cập nhật bảng ReviewerProfiles
-        if (user.ReviewerProfile == null)
+        // 2. Kiểm tra nếu Form gửi lên có AcademicTitle hoặc Affiliation -> Người dùng đang lưu ở Tab 2
+        if (vm.AcademicTitle != null || vm.Affiliation != null)
         {
-            user.ReviewerProfile = new tblReviewerProfiles { UserId = userId };
-            _context.ReviewerProfiles.Add(user.ReviewerProfile);
-        }
-        user.ReviewerProfile.AcademicTitle = vm.AcademicTitle ?? user.ReviewerProfile.AcademicTitle;
-        user.ReviewerProfile.Affiliation = vm.Affiliation ?? user.ReviewerProfile.Affiliation;
-
-        // 3. Cập nhật bảng UserExpertise (Xóa hết cũ, add lại mới)
-        _context.UsersExpertises.RemoveRange(user.UserExpertises);
-        if (!string.IsNullOrEmpty(vm.ExpertiseKeywords))
-        {
-            var keywords = vm.ExpertiseKeywords.Split(',').Select(k => k.Trim());
-            foreach (var k in keywords)
+            if (user.ReviewerProfile == null)
             {
-                _context.UsersExpertises.Add(new tblUsersExpertise { UserId = userId, Keyword = k });
+                user.ReviewerProfile = new tblReviewerProfiles { UserId = userId };
+                _context.ReviewerProfiles.Add(user.ReviewerProfile);
+            }
+
+            // CHỈ CẬP NHẬT NẾU GIÁ TRỊ GỬI LÊN KHÔNG NULL
+            if (vm.AcademicTitle != null) user.ReviewerProfile.AcademicTitle = vm.AcademicTitle;
+            if (vm.Affiliation != null) user.ReviewerProfile.Affiliation = vm.Affiliation;
+
+            // Xử lý Chuyên môn (Keywords)
+            if (vm.ExpertiseKeywords != null)
+            {
+                _context.UsersExpertises.RemoveRange(user.UserExpertises);
+                var keywords = vm.ExpertiseKeywords.Split(',').Select(k => k.Trim()).Where(k => !string.IsNullOrEmpty(k));
+                foreach (var k in keywords)
+                    _context.UsersExpertises.Add(new tblUsersExpertise { UserId = userId, Keyword = k });
             }
         }
 
         await _context.SaveChangesAsync();
-        TempData["Success"] = "Cập nhật hồ sơ và hồ sơ khoa học thành công!";
+        TempData["Success"] = _localizer["UpdateProfileSuccess"].Value;
         return RedirectToAction("Profile");
     }
 
-    // --- CÁC HÀM KHÁC GIỮ NGUYÊN ---
+    private async Task<UserProfileViewModel?> GetProfileData()
+    {
+        var userId = GetCurrentUserId();
+        var user = await _context.Users
+            .AsNoTracking() // Dùng AsNoTracking để lấy dữ liệu mới nhất từ DB
+            .Include(u => u.ReviewerProfile)
+            .Include(u => u.UserExpertises)
+            .FirstOrDefaultAsync(u => u.UserId == userId);
+
+        if (user == null) return null;
+
+        return new UserProfileViewModel
+        {
+            FullName = user.FullName ?? "",
+            Email = user.Email ?? "",
+            Phone = user.Phone ?? "",
+            Gender = user.Gender ?? "Nam",
+            Avatar = user.Avatar,
+            AcademicTitle = user.ReviewerProfile?.AcademicTitle ?? "Không",
+            Affiliation = user.ReviewerProfile?.Affiliation ?? "",
+            ExpertiseKeywords = user.UserExpertises != null
+                ? string.Join(", ", user.UserExpertises.Select(e => e.Keyword))
+                : ""
+        };
+    }
+
+    #endregion
+
+    #region 3. BẢO MẬT (CHANGE PASSWORD)
+
+    // --- TRONG HÀM CHANGEPASSWORD ---
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> ChangePassword(ChangePasswordViewModel vm)
+    {
+        // ModelState.IsValid sẽ tự check độ dài 6 ký tự từ ViewModel, bạn không cần code tay lại
+        if (!ModelState.IsValid) return View("Profile", await GetProfileData());
+
+        var userId = GetCurrentUserId();
+        var user = await _context.Users.FindAsync(userId);
+        if (user == null) return NotFound();
+
+        // KIỂM TRA MẬT KHẨU HIỆN TẠI
+        if (!BCrypt.Net.BCrypt.Verify(vm.OldPassword, user.PasswordHash))
+        {
+            ModelState.AddModelError("OldPassword", _localizer["WrongOldPassword"]);
+            return View("Profile", await GetProfileData());
+        }
+
+        // Hash mật khẩu mới
+        user.PasswordHash = BCrypt.Net.BCrypt.HashPassword(vm.NewPassword);
+        await _context.SaveChangesAsync();
+
+        TempData["Success"] = _localizer["ChangePasswordSuccess"].Value;
+        return RedirectToAction("Profile");
+    }
+
+    #endregion
+
+    #region 4. HÀM TRỢ GIÚP (HELPERS)
+
+    private int GetCurrentUserId()
+    {
+        var id = User.FindFirstValue(ClaimTypes.NameIdentifier);
+        return int.TryParse(id, out int userId) ? userId : 0;
+    }
+
+
     [HttpPost]
     public IActionResult SetLanguage(string culture, string returnUrl)
     {
@@ -164,10 +275,5 @@ public class AccountController : Controller
         return LocalRedirect(returnUrl);
     }
 
-    [HttpPost]
-    public async Task<IActionResult> Logout()
-    {
-        await HttpContext.SignOutAsync("CookieAuth");
-        return RedirectToAction("Login");
-    }
+    #endregion
 }

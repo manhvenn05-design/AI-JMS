@@ -1,80 +1,94 @@
 @model AI_JMS.Models.ViewModels.UserProfileViewModel
+@using AI_JMS.Models.ViewModels
 @{
     ViewData["Title"] = "Hồ sơ cá nhân";
-    
-    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml"; 
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
 }
 
 <div class="container-fluid">
     <div class="d-sm-flex align-items-center justify-content-between mb-4">
-        <h1 class="h3 mb-0 text-gray-800">Cấu hình hồ sơ</h1>
+        <h1 class="h3 mb-0 text-gray-800"><i class="fas fa-id-badge mr-2"></i>Cấu hình hồ sơ</h1>
     </div>
 
     <div class="row">
         <div class="col-lg-4">
             <div class="card shadow mb-4">
                 <div class="card-body text-center">
-                    <img class="img-profile rounded-circle mb-3 shadow" 
-                         src="~/img/avatars/@(string.IsNullOrEmpty(Model.Avatar) ? "default-avatar.png" : Model.Avatar)" 
+                    <img class="img-profile rounded-circle mb-3 shadow"
+                         src="~/img/avatars/@(string.IsNullOrEmpty(Model.Avatar) ? "default-avatar.png" : Model.Avatar)"
                          style="width: 150px; height: 150px; object-fit: cover; border: 3px solid #f8f9fc;">
                     <h5 class="font-weight-bold text-primary">@Model.FullName</h5>
-                    <p class="text-muted small">@Model.Email</p>
+                    <p class="text-muted small"><i class="fas fa-envelope mr-1"></i>@Model.Email</p>
                 </div>
             </div>
         </div>
 
         <div class="col-lg-8">
             <div class="card shadow mb-4">
-                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                <div class="card-header py-3">
                     <ul class="nav nav-tabs card-header-tabs" id="profileTab" role="tablist">
                         <li class="nav-item">
                             <a class="nav-link active" id="account-tab" data-toggle="tab" href="#account" role="tab">
-                                <i class="fas fa-user-circle fa-sm"></i> Thông tin tài khoản
+                                <i class="fas fa-user-edit mr-1"></i> Thông tin
                             </a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" id="scientific-tab" data-toggle="tab" href="#scientific" role="tab">
-                                <i class="fas fa-microscope fa-sm"></i> Hồ sơ khoa học
+                                <i class="fas fa-flask mr-1"></i> Hồ sơ khoa học
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" id="security-tab" data-toggle="tab" href="#security" role="tab">
+                                <i class="fas fa-lock mr-1"></i> Bảo mật
                             </a>
                         </li>
                     </ul>
                 </div>
 
                 <div class="card-body">
-                    <form asp-action="UpdateProfile" method="post" enctype="multipart/form-data">
-                        <div class="tab-content" id="profileTabContent">
-                            
-                            <div class="tab-pane fade show active" id="account" role="tabpanel">
+                    <div class="tab-content" id="profileTabContent">
+
+                        <div class="tab-pane fade show active" id="account" role="tabpanel">
+                            <form asp-action="UpdateProfile" method="post" enctype="multipart/form-data">
+                                @Html.AntiForgeryToken()
                                 <div class="form-group">
-                                    <label class="text-dark font-weight-bold">Họ và tên</label>
-                                    <input asp-for="FullName" class="form-control" placeholder="Nhập họ tên đầy đủ" />
+                                    <label class="font-weight-bold text-dark"><i class="fas fa-signature mr-1"></i>Họ và tên</label>
+                                    <input asp-for="FullName" class="form-control" />
                                 </div>
                                 <div class="row">
                                     <div class="col-md-6 form-group">
-                                        <label class="text-dark font-weight-bold">Số điện thoại</label>
-                                        <input asp-for="Phone" class="form-control" placeholder="0123.456.789" />
+                                        <label class="font-weight-bold text-dark"><i class="fas fa-mobile-alt mr-1"></i>Số điện thoại</label>
+                                        <input asp-for="Phone" class="form-control" />
                                     </div>
                                     <div class="col-md-6 form-group">
-                                        <label class="text-dark font-weight-bold">Giới tính</label>
+                                        <label class="font-weight-bold text-dark"><i class="fas fa-venus-mars mr-1"></i>Giới tính</label>
                                         <select asp-for="Gender" class="form-control">
                                             <option value="Nam">Nam</option>
                                             <option value="Nữ">Nữ</option>
-                                            <option value="Khác">Khác</option>
                                         </select>
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label class="text-dark font-weight-bold">Thay đổi ảnh đại diện</label>
+                                    <label class="font-weight-bold text-dark"><i class="fas fa-image mr-1"></i>Ảnh đại diện</label>
                                     <div class="custom-file">
-                                        <input type="file" name="avatarFile" class="custom-file-input" id="customFile">
-                                        <label class="custom-file-label" for="customFile">Chọn ảnh...</label>
+                                        <input type="file" name="avatarFile" class="custom-file-input" id="avatarInput">
+                                        <label class="custom-file-label" for="avatarInput">Chọn tệp...</label>
                                     </div>
                                 </div>
-                            </div>
+                                <div class="text-right mt-3">
+                                    <button type="submit" class="btn btn-primary btn-icon-split shadow-sm">
+                                        <span class="icon text-white-50"><i class="fas fa-save"></i></span>
+                                        <span class="text">Cập nhật hồ sơ</span>
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
 
-                            <div class="tab-pane fade" id="scientific" role="tabpanel">
+                        <div class="tab-pane fade" id="scientific" role="tabpanel">
+                            <form asp-action="UpdateProfile" method="post">
+                                @Html.AntiForgeryToken()
                                 <div class="form-group">
-                                    <label class="text-dark font-weight-bold">Học hàm, học vị</label>
+                                    <label class="font-weight-bold text-dark"><i class="fas fa-user-graduate mr-1"></i>Học hàm, học vị</label>
                                     <select asp-for="AcademicTitle" class="form-control border-left-primary">
                                         <option value="Không">Không</option>
                                         <option value="Thạc sĩ">Thạc sĩ</option>
@@ -84,28 +98,81 @@
                                     </select>
                                 </div>
                                 <div class="form-group">
-                                    <label class="text-dark font-weight-bold">Đơn vị công tác</label>
-                                    <input asp-for="Affiliation" class="form-control border-left-primary" placeholder="Ví dụ: Đại học Vinh" />
+                                    <label class="font-weight-bold text-dark"><i class="fas fa-university mr-1"></i>Đơn vị công tác</label>
+                                    <input asp-for="Affiliation" class="form-control border-left-primary" />
                                 </div>
                                 <div class="form-group">
-                                    <label class="text-dark font-weight-bold">Lĩnh vực chuyên môn (Keywords)</label>
-                                    <textarea asp-for="ExpertiseKeywords" class="form-control border-left-primary" rows="3" 
-                                              placeholder="AI, Deep Learning, Java..."></textarea>
-                                    <small class="form-text text-info"><i class="fas fa-info-circle"></i> Cách nhau bằng dấu phẩy.</small>
+                                    <label class="font-weight-bold text-dark"><i class="fas fa-brain mr-1"></i>Lĩnh vực chuyên môn</label>
+                                    <textarea asp-for="ExpertiseKeywords" class="form-control border-left-primary" rows="3" placeholder="Ví dụ: AI, Deep Learning, Web Development"></textarea>
                                 </div>
-                            </div>
+                                <div class="text-right mt-3">
+                                    <button type="submit" class="btn btn-primary btn-icon-split shadow-sm">
+                                        <span class="icon text-white-50"><i class="fas fa-check"></i></span>
+                                        <span class="text">Lưu hồ sơ khoa học</span>
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
 
+                        <div class="tab-pane fade" id="security" role="tabpanel">
+                            <form asp-action="ChangePassword" method="post">
+                                @Html.AntiForgeryToken()
+                                <div class="form-group">
+                                    <label class="font-weight-bold text-dark"><i class="fas fa-key mr-1"></i>Mật khẩu hiện tại</label>
+                                    <input type="password" name="OldPassword" class="form-control border-left-danger" required />
+                                    <span class="text-danger small">@Html.ValidationMessage("OldPassword")</span>
+                                </div>
+                                <div class="form-group">
+                                    <label class="font-weight-bold text-dark"><i class="fas fa-lock mr-1"></i>Mật khẩu mới</label>
+                                    <input type="password" name="NewPassword" class="form-control border-left-danger" required />
+                                    <span class="text-danger small">@Html.ValidationMessage("NewPassword")</span>
+                                </div>
+                                <div class="form-group">
+                                    <label class="font-weight-bold text-dark"><i class="fas fa-user-shield mr-1"></i>Xác nhận mật khẩu</label>
+                                    <input type="password" name="ConfirmPassword" class="form-control border-left-danger" required />
+                                    <span class="text-danger small">@Html.ValidationMessage("ConfirmPassword")</span>
+                                </div>
+                                <div class="text-right mt-3">
+                                    <button type="submit" class="btn btn-danger btn-icon-split shadow-sm">
+                                        <span class="icon text-white-50"><i class="fas fa-sync"></i></span>
+                                        <span class="text">Đổi mật khẩu</span>
+                                    </button>
+                                </div>
+                            </form>
                         </div>
-                        
-                        <div class="mt-4 text-right">
-                            <button type="submit" class="btn btn-primary btn-icon-split shadow">
-                                <span class="icon text-white-50"><i class="fas fa-save"></i></span>
-                                <span class="text">Lưu tất cả thay đổi</span>
-                            </button>
-                        </div>
-                    </form>
-                </div>
+
+                    </div> </div>
             </div>
         </div>
     </div>
 </div>
+
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        $(document).ready(function () {
+            // Hiện thông báo thành công (Chuẩn Tiếng Việt)
+            var successMsg = '@Html.Raw(TempData["Success"])';
+            if (successMsg) {
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Thành công!',
+                    text: successMsg,
+                    confirmButtonColor: '#4e73df'
+                });
+            }
+
+            // Giữ lại tab Bảo mật nếu có lỗi Validation từ Server gửi về
+            var hasPassError = '@(ViewData.ModelState.ContainsKey("OldPassword") || ViewData.ModelState.ContainsKey("NewPassword") ? "true" : "false")';
+            if (hasPassError === "true") {
+                $('#profileTab a[href="#security"]').tab('show');
+            }
+
+            // Hiện tên file khi chọn ảnh
+            $('.custom-file-input').on('change', function () {
+                var fileName = $(this).val().split('\\').pop();
+                $(this).siblings('.custom-file-label').addClass("selected").html(fileName);
+            });
+        });
+    </script>
+}
