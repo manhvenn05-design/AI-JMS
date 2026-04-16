@@ -201,4 +201,17 @@
     <value>System Configuration</value>
   </data>
 
+  <data name="Menu_InitialCheck" xml:space="preserve">
+    <value>Initial Checklist</value>
+  </data>
+  <data name="Menu_TrackingProgress" xml:space="preserve">
+    <value>Tracking Progress</value>
+  </data>
+  <data name="Menu_UserDirectory" xml:space="preserve">
+    <value>User Directory</value>
+  </data>
+  <data name="Menu_IssueManagement" xml:space="preserve">
+    <value>Issue Management</value>
+  </data>
+
 </root>
