@@ -172,4 +172,33 @@
     <value>Your account is locked. Please contact the administrator.</value>
   </data>
 
+  <data name="Menu_SubmitArticle" xml:space="preserve">
+    <value>Submit Article</value>
+  </data>
+  <data name="Menu_MyArticles" xml:space="preserve">
+    <value>My Articles</value>
+  </data>
+
+  <data name="Menu_ReviewPending" xml:space="preserve">
+    <value>Review Pending</value>
+  </data>
+  <data name="Menu_ReviewHistory" xml:space="preserve">
+    <value>Review History</value>
+  </data>
+
+  <data name="Menu_EditorialAssignment" xml:space="preserve">
+    <value>Editorial Assignment</value>
+  </data>
+  <data name="Menu_ArticleManagement" xml:space="preserve">
+    <value>Article Management</value>
+  </data>
+
+  <data name="Menu_UserManagement" xml:space="preserve">
+    <value>User Management</value>
+  </data>
+
+  <data name="Menu_SystemConfig" xml:space="preserve">
+    <value>System Configuration</value>
+  </data>
+
 </root>

@@ -176,4 +176,37 @@
   <data name="AccountLocked" xml:space="preserve">
     <value>Tài khoản của bạn đã bị khóa. Vui lòng liên hệ quản trị viên.</value>
   </data>
+
+  <data name="Menu_SubmitArticle" xml:space="preserve">
+    <value>Gửi Bài viết</value>
+  </data>
+  <data name="Menu_MyArticles" xml:space="preserve">
+    <value>Bài viết của tôi</value>
+  </data>
+  
+  <data name="Menu_ReviewPending" xml:space="preserve">
+    <value>Đánh giá Đang chờ</value>
+  </data>
+  <data name="Menu_ReviewHistory" xml:space="preserve">
+    <value>Lịch sử Đánh giá</value>
+  </data>
+
+  <data name="Menu_EditorialAssignment" xml:space="preserve">
+    <value>Phân công Biên tập</value>
+  </data>
+  <data name="Menu_ArticleManagement" xml:space="preserve">
+    <value>Quản lý Bài viết</value>
+  </data>
+
+  <data name="Menu_UserManagement" xml:space="preserve">
+    <value>Quản lý Người dùng</value>
+  </data>
+
+  <data name="Menu_SystemConfig" xml:space="preserve">
+    <value>Quản lý Hệ thống</value>
+  </data>
+
+  
+
+
 </root>
