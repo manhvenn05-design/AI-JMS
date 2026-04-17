@@ -19,89 +19,89 @@ build_property.TargetFrameworkIdentifier = .NETCoreApp
 build_property.TargetFrameworkVersion = v10.0
 build_property.RootNamespace = AI_JMS
 build_property.RootNamespace = AI_JMS
-build_property.ProjectDir = D:\AI_JMS\AI_JMS\
+build_property.ProjectDir = D:\CodeCuaToi\AI-JMS\AI_JMS\
 build_property.EnableComHosting = 
 build_property.EnableGeneratedComInterfaceComImportInterop = 
 build_property.RazorLangVersion = 9.0
 build_property.SupportLocalizedComponentNames = 
 build_property.GenerateRazorMetadataSourceChecksumAttributes = 
-build_property.MSBuildProjectDirectory = D:\AI_JMS\AI_JMS
+build_property.MSBuildProjectDirectory = D:\CodeCuaToi\AI-JMS\AI_JMS
 build_property._RazorSourceGeneratorDebug = 
 build_property.EffectiveAnalysisLevelStyle = 10.0
 build_property.EnableCodeStyleSeverity = 
 
-[D:/AI_JMS/AI_JMS/Areas/Admin/Views/Home/Index.cshtml]
+[D:/CodeCuaToi/AI-JMS/AI_JMS/Areas/Admin/Views/Home/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcSG9tZVxJbmRleC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/AI_JMS/AI_JMS/Areas/Admin/Views/Shared/_AdminLayout.cshtml]
+[D:/CodeCuaToi/AI-JMS/AI_JMS/Areas/Admin/Views/Shared/_AdminLayout.cshtml]
 build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcU2hhcmVkXF9BZG1pbkxheW91dC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/AI_JMS/AI_JMS/Areas/Admin/Views/Users/Index.cshtml]
+[D:/CodeCuaToi/AI-JMS/AI_JMS/Areas/Admin/Views/Users/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcVXNlcnNcSW5kZXguY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/AI_JMS/AI_JMS/Areas/Admin/Views/_ViewImports.cshtml]
+[D:/CodeCuaToi/AI-JMS/AI_JMS/Areas/Admin/Views/_ViewImports.cshtml]
 build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcX1ZpZXdJbXBvcnRzLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/AI_JMS/AI_JMS/Areas/Admin/Views/_ViewStart.cshtml]
+[D:/CodeCuaToi/AI-JMS/AI_JMS/Areas/Admin/Views/_ViewStart.cshtml]
 build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcX1ZpZXdTdGFydC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/AI_JMS/AI_JMS/Views/Account/Login.cshtml]
+[D:/CodeCuaToi/AI-JMS/AI_JMS/Views/Account/Login.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWNjb3VudFxMb2dpbi5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/AI_JMS/AI_JMS/Views/Account/Profile.cshtml]
+[D:/CodeCuaToi/AI-JMS/AI_JMS/Views/Account/Profile.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWNjb3VudFxQcm9maWxlLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/AI_JMS/AI_JMS/Views/Account/Register.cshtml]
+[D:/CodeCuaToi/AI-JMS/AI_JMS/Views/Account/Register.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWNjb3VudFxSZWdpc3Rlci5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/AI_JMS/AI_JMS/Views/Home/Index.cshtml]
+[D:/CodeCuaToi/AI-JMS/AI_JMS/Views/Home/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxJbmRleC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/AI_JMS/AI_JMS/Views/Home/Privacy.cshtml]
+[D:/CodeCuaToi/AI-JMS/AI_JMS/Views/Home/Privacy.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxQcml2YWN5LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/AI_JMS/AI_JMS/Views/Shared/Components/AdminMenu/Default.cshtml]
+[D:/CodeCuaToi/AI-JMS/AI_JMS/Views/Shared/Components/AdminMenu/Default.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXENvbXBvbmVudHNcQWRtaW5NZW51XERlZmF1bHQuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/AI_JMS/AI_JMS/Views/Shared/Components/AdminTopbar/Default.cshtml]
+[D:/CodeCuaToi/AI-JMS/AI_JMS/Views/Shared/Components/AdminTopbar/Default.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXENvbXBvbmVudHNcQWRtaW5Ub3BiYXJcRGVmYXVsdC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/AI_JMS/AI_JMS/Views/Shared/Error.cshtml]
+[D:/CodeCuaToi/AI-JMS/AI_JMS/Views/Shared/Error.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXEVycm9yLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/AI_JMS/AI_JMS/Views/Shared/_ValidationScriptsPartial.cshtml]
+[D:/CodeCuaToi/AI-JMS/AI_JMS/Views/Shared/_ValidationScriptsPartial.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9WYWxpZGF0aW9uU2NyaXB0c1BhcnRpYWwuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/AI_JMS/AI_JMS/Views/_ViewImports.cshtml]
+[D:/CodeCuaToi/AI-JMS/AI_JMS/Views/_ViewImports.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcX1ZpZXdJbXBvcnRzLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/AI_JMS/AI_JMS/Views/_ViewStart.cshtml]
+[D:/CodeCuaToi/AI-JMS/AI_JMS/Views/_ViewStart.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcX1ZpZXdTdGFydC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/AI_JMS/AI_JMS/Views/Shared/_Layout.cshtml]
+[D:/CodeCuaToi/AI-JMS/AI_JMS/Views/Shared/_Layout.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9MYXlvdXQuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = b-7fhc8a77nm
 
-[D:/AI_JMS/AI_JMS/Resources/SharedResource.en.resx]
+[D:/CodeCuaToi/AI-JMS/AI_JMS/Resources/SharedResource.en.resx]
 build_metadata.AdditionalFiles.TargetPath = Resources\SharedResource.en.resx
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/AI_JMS/AI_JMS/Resources/SharedResource.vi.resx]
+[D:/CodeCuaToi/AI-JMS/AI_JMS/Resources/SharedResource.vi.resx]
 build_metadata.AdditionalFiles.TargetPath = Resources\SharedResource.vi.resx
 build_metadata.AdditionalFiles.CssScope = 

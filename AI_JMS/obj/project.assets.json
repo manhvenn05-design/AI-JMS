@@ -3245,19 +3245,19 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\manhpc\\.nuget\\packages\\": {}
+    "C:\\Users\\Admin\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "D:\\AI_JMS\\AI_JMS\\AI_JMS.csproj",
+      "projectUniqueName": "D:\\CodeCuaToi\\AI-JMS\\AI_JMS\\AI_JMS.csproj",
       "projectName": "AI_JMS",
-      "projectPath": "D:\\AI_JMS\\AI_JMS\\AI_JMS.csproj",
-      "packagesPath": "C:\\Users\\manhpc\\.nuget\\packages\\",
-      "outputPath": "D:\\AI_JMS\\AI_JMS\\obj\\",
+      "projectPath": "D:\\CodeCuaToi\\AI-JMS\\AI_JMS\\AI_JMS.csproj",
+      "packagesPath": "C:\\Users\\Admin\\.nuget\\packages\\",
+      "outputPath": "D:\\CodeCuaToi\\AI-JMS\\AI_JMS\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "C:\\Users\\manhpc\\AppData\\Roaming\\NuGet\\NuGet.Config"
+        "C:\\Users\\Admin\\AppData\\Roaming\\NuGet\\NuGet.Config"
       ],
       "originalTargetFrameworks": [
         "net10.0"

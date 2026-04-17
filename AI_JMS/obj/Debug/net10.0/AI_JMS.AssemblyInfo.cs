@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("AI_JMS")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+0c7605a8e7e896c9f0e709e65683d527c05dc337")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+c81504748cf83c47b37af543b30f729551d28edf")]
 [assembly: System.Reflection.AssemblyProductAttribute("AI_JMS")]
 [assembly: System.Reflection.AssemblyTitleAttribute("AI_JMS")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
